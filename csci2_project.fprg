@@ -1,0 +1,219 @@
+<?xml version="1.0"?>
+<flowgorithm fileversion="4.2">
+    <attributes>
+        <attribute name="name" value="csci2_project"/>
+        <attribute name="authors" value="madim"/>
+        <attribute name="about" value=""/>
+        <attribute name="saved" value="2026-10-15 01:06:08 AM"/>
+        <attribute name="created" value="bWFkaW07TFlOX1BDOzIwMjYtMTAtMTQ7MDE6Mzk6MDcgQU07MjI3MA=="/>
+        <attribute name="edited" value="bWFkaW07TFlOX1BDOzIwMjYtMTAtMTU7MDE6MDY6MDggQU07MTM7MjQyNQ=="/>
+    </attributes>
+    <function name="Main" type="None" variable="">
+        <parameters/>
+        <body>
+            <declare name="centralInput, subInput, pidInput, searchQuery, titleInput, month, day, year, hour, minute, timezone, am_pm, title, author, genre, category, specialNumber, name" type="String" array="False" size=""/>
+            <declare name="max" type="Integer" array="False" size=""/>
+            <comment text="Library library is also declared"/>
+            <assign variable="centralInput" expression="&quot;0&quot;"/>
+            <call expression="library.loadData()"/>
+            <comment text="Loads save data from books.txt and patrons.txt into the library"/>
+            <output expression="&quot;Welcome to the Library Management System.&quot;&#13;&#10;&quot;Type and enter a number to select a course of action.&quot;" newline="True"/>
+            <call expression="textBuffer()"/>
+            <comment text="Outputs a row of hyphens to separate sections of text"/>
+            <while expression="centralInput != &quot;-1&quot;">
+                <assign variable="subInput" expression="&quot;0&quot;"/>
+                <output expression="&quot;Main Menu&quot;&#13;&#10;&quot;(1) View books and patrons&quot;&#13;&#10;&quot;(2) Check out or return books&quot;&#13;&#10;&quot;(3) Add new books or patrons&quot;&#13;&#10;&quot;(-1) Exit program&quot;" newline="True"/>
+                <call expression="getline(cin, subInput)"/>
+                <call expression="textBuffer()"/>
+                <if expression="centralInput == &quot;1&quot;">
+                    <then>
+                        <while expression="subInput != &quot;4&quot;">
+                            <output expression="&quot;(1) View books&quot;&#13;&#10;&quot;(2) Search books&quot;&#13;&#10;&quot;(3) View patrons&quot;&#13;&#10;&quot;(4) Main Menu&quot;" newline="True"/>
+                            <call expression="getline(cin, subInput)"/>
+                            <call expression="textBuffer()"/>
+                            <if expression="subInput == &quot;1&quot;">
+                                <then>
+                                    <call expression="library.displayBooks()"/>
+                                    <comment text="Displays the information of each Book object whose memory address is contained in library's books vector"/>
+                                </then>
+                                <else>
+                                    <if expression="subInput == &quot;2&quot;">
+                                        <then>
+                                            <output expression="&quot;(1) Search by title&quot;&#13;&#10;&quot;(2) Search by author&quot;" newline="True"/>
+                                            <call expression="getline(cin, subInput)"/>
+                                            <call expression="textBuffer()"/>
+                                            <output expression="&quot;Enter search query: &quot;" newline="True"/>
+                                            <call expression="getline(cin, searchQuery)"/>
+                                            <for variable="i" start="0" end="library.getBooks().size()" direction="inc" step="1">
+                                                <comment text="getBooks returns library's vector of pointers of Book objects"/>
+                                                <if expression="subInput == &quot;1&quot;">
+                                                    <then>
+                                                        <if expression="library.getBooks().at(i)-&gt;getTitle().find(searchQuery) != std::string::npos">
+                                                            <then>
+                                                                <comment text="getTitle returns the title of the Book object calling it"/>
+                                                                <call expression="library.getBooks().at(i)-&gt;displayInfo()"/>
+                                                                <call expression="textBuffer()"/>
+                                                            </then>
+                                                            <else/>
+                                                        </if>
+                                                    </then>
+                                                    <else>
+                                                        <if expression="subInput == &quot;2&quot;">
+                                                            <then>
+                                                                <if expression="library.getBooks().at(i)-&gt;getAuthor().find(searchQuery) != std::string::npos">
+                                                                    <then>
+                                                                        <comment text="getTitle returns the author of the Book object calling it"/>
+                                                                        <call expression="library.getBooks().at(i)-&gt;displayInfo()"/>
+                                                                        <call expression="textBuffer()"/>
+                                                                    </then>
+                                                                    <else/>
+                                                                </if>
+                                                            </then>
+                                                            <else/>
+                                                        </if>
+                                                    </else>
+                                                </if>
+                                            </for>
+                                        </then>
+                                        <else>
+                                            <if expression="subInput == &quot;3&quot;">
+                                                <then>
+                                                    <call expression="library.displayPatrons()"/>
+                                                    <comment text="displayPatrons lists the information of each patron contained in library's patrons vector"/>
+                                                </then>
+                                                <else/>
+                                            </if>
+                                        </else>
+                                    </if>
+                                </else>
+                            </if>
+                        </while>
+                    </then>
+                    <else/>
+                </if>
+                <if expression="centralInput == &quot;2&quot;">
+                    <then>
+                        <while expression="subInput != &quot;3&quot;">
+                            <assign variable="subInput" expression="&quot;0&quot;"/>
+                            <output expression="&quot;(1) Check out a book&quot;&#13;&#10;&quot;(2) Return a book&quot;&#13;&#10;&quot;(3) Main Menu&quot;" newline="True"/>
+                            <call expression="getline(cin, subInput)"/>
+                            <call expression="textBuffer()"/>
+                            <if expression="subInput == &quot;1&quot;">
+                                <then>
+                                    <output expression="&quot;Patron ID: &quot;" newline="True"/>
+                                    <call expression="getline(cin, pidInput)"/>
+                                    <output expression="&quot;Book Title: &quot;" newline="True"/>
+                                    <call expression="getline(cin, titleInput)"/>
+                                    <output expression="&quot;Enter date (MM/DD/YYYY)&quot;&#13;&#10;&quot;Month: &quot;" newline="True"/>
+                                    <call expression="getline(cin, month)"/>
+                                    <output expression="&quot;Day:" newline="True"/>
+                                    <call expression="getline(cin, day)"/>
+                                    <output expression="&quot;Year: &quot;" newline="True"/>
+                                    <call expression="getline(cin, year)"/>
+                                    <output expression="&quot;Enter time&quot;&#13;&#10;&quot;Timezone: &quot;" newline="True"/>
+                                    <call expression="getline(cin, timezone)"/>
+                                    <output expression="Hour:" newline="True"/>
+                                    <call expression="getline(cin, hour)"/>
+                                    <output expression="&quot;Minute: &quot;" newline="True"/>
+                                    <call expression="getline(cin, minute)"/>
+                                    <output expression="&quot;a.m./p.m.: &quot;" newline="True"/>
+                                    <call expression="getline(cin, am_pm)"/>
+                                    <call expression="library.checkoutBook(stoi(pidInput), titleInput, Date(month, day, stoi(year)), parseTime(hour, minute, timezone, am_pm)"/>
+                                    <comment text="checkoutBook adds the Book matching the title parameter to the borrowed books vector of the patron matching the ID parameter, changes the status of the Book appropriately, then creates a Transaction using all of the given information"/>
+                                </then>
+                                <else/>
+                            </if>
+                            <if expression="subInput == &quot;2&quot;">
+                                <then>
+                                    <output expression="&quot;Patron ID: &quot;" newline="True"/>
+                                    <call expression="getline(cin, pidInput)"/>
+                                    <output expression="&quot;Book Title: &quot;" newline="True"/>
+                                    <call expression="getline(cin, titleInput)"/>
+                                    <call expression="library.returnBook(stoi(pidInput), titleInput)"/>
+                                    <comment text="returnBook does the opposite of checkoutBook while using much of the same logic, removing the titled Book from the ID'd patron's borrowedBooks vector and changing the Book's status back to Available"/>
+                                </then>
+                                <else/>
+                            </if>
+                        </while>
+                    </then>
+                    <else/>
+                </if>
+                <if expression="centralInput == &quot;3&quot;">
+                    <then>
+                        <while expression="subInput != &quot;3&quot;">
+                            <output expression="&quot;(1) Add new books&quot;&#13;&#10;&quot;(2) Add new patron&quot;&#13;&#10;&quot;(3) Main Menu&quot;" newline="True"/>
+                            <call expression="getline(cin, subInput)"/>
+                            <call expression="textBuffer()"/>
+                            <if expression="subInput == &quot;1&quot;">
+                                <then>
+                                    <output expression="&quot;Enter title: &quot;" newline="True"/>
+                                    <call expression="getline(cin, title)"/>
+                                    <output expression="&quot;Enter author: &quot;" newline="True"/>
+                                    <call expression="getline(cin, author)"/>
+                                    <output expression="&quot;Enter genre: &quot;" newline="True"/>
+                                    <call expression="getline(cin, genre)"/>
+                                    <output expression="&quot;Enter category (\&quot;EBook\&quot; or \&quot;Printed\&quot;): &quot;" newline="True"/>
+                                    <call expression="getline(cin, category)"/>
+                                    <if expression="category == &quot;EBook&quot;">
+                                        <then>
+                                            <output expression="&quot;Enter file size in mb (number only): &quot;" newline="True"/>
+                                            <call expression="getline(cin, specialNumber)"/>
+                                            <call expression="library.parseBook(genre,title,author,category,stod(specialNumber))"/>
+                                            <comment text="parseBook creates a Book object using the given parameters, with the main functionality being converting the category string parameter into an appropriate enum value"/>
+                                            <output expression="&quot;Book added successfully.&quot;" newline="True"/>
+                                            <call expression="textBuffer()"/>
+                                            <call expression="library.saveData()"/>
+                                            <comment text="saveData replaces the text in the books.txt and patrons.txt files with the information of all of the Books and Patrons in the library at the time the function is called"/>
+                                        </then>
+                                        <else>
+                                            <if expression="category == &quot;Printed&quot;">
+                                                <then>
+                                                    <output expression="&quot;Enter page count: &quot;" newline="True"/>
+                                                    <call expression="getline(cin, specialNumber)"/>
+                                                    <call expression="library.parseBook(genre, title, author, category, stoi(specialNumber))"/>
+                                                    <output expression="&quot;Book aded successfully.&quot;" newline="True"/>
+                                                    <call expression="library.saveData()"/>
+                                                </then>
+                                                <else/>
+                                            </if>
+                                        </else>
+                                    </if>
+                                </then>
+                                <else/>
+                            </if>
+                            <if expression="subInput == &quot;2&quot;">
+                                <then>
+                                    <assign variable="max" expression="0"/>
+                                    <for variable="i" start="0" end="library.getPatrons().size()" direction="inc" step="1">
+                                        <comment text="getPatrons returns the library's vector of patrons"/>
+                                        <if expression="max &lt; library.getPatrons().at(i).getId()">
+                                            <then>
+                                                <comment text="getId returns the ID value of the patron that calls it"/>
+                                                <assign variable="max" expression="library.getPatrons().at(i).getId()"/>
+                                            </then>
+                                            <else/>
+                                        </if>
+                                    </for>
+                                    <assign variable="max" expression="max + 1"/>
+                                    <output expression="&quot;Creating patron with ID &quot; max&#13;&#10;&quot;Enter patron's name: &quot;" newline="True"/>
+                                    <call expression="getline(cin, name)"/>
+                                    <call expression="library.addPatron(Patron(name, max))"/>
+                                    <comment text="addPatron adds the Patron object given as a parameter to the library's patrons vector"/>
+                                    <output expression="&quot;Registered &quot; name &quot; to patron ID &quot; max &quot;.&quot;" newline="True"/>
+                                    <call expression="library.saveData()"/>
+                                </then>
+                                <else/>
+                            </if>
+                        </while>
+                    </then>
+                    <else/>
+                </if>
+            </while>
+            <output expression="&quot;Closing Library Management System...&quot;" newline="True"/>
+        </body>
+    </function>
+    <function name="textBuffer" type="None" variable="">
+        <parameters/>
+        <body/>
+    </function>
+</flowgorithm>
